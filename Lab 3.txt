@@ -1,0 +1,57 @@
+import re
+import csv
+
+filename = input("Enter the file name: ")
+
+file = open(filename, "r")
+
+results = []
+line_number = 1
+
+for line in file:
+    numbers = re.findall(r'\d+', line)   
+    result_line = "Line " + str(line_number) + ": "
+
+    if len(numbers) == 0:
+        result_line = result_line + "(no numbers)"
+    else:
+        nums_text = ""
+        for n in numbers:
+            nums_text = nums_text + n + " "
+        result_line = result_line + nums_text.strip()
+
+    results.append(result_line)
+    line_number = line_number + 1
+
+file.close()
+
+print("\nResults:\n")
+for r in results:
+    print(r)
+
+out_file = open("output.csv", "w", newline="")
+writer = csv.writer(out_file)
+writer.writerow(results)
+out_file.close()
+
+print("\nMade output.csv")
+
+"""
+ian@Julians-MacBook-Pro-7 Lab 2 % python3 main.py
+Enter the file name: assignment_3.txt
+
+Results:
+
+Line 1: 4 7 22
+Line 2: (no numbers)
+Line 3: 21 73 11 3
+Line 4: (no numbers)
+Line 5: 44 18 2 5 16 13 19
+Line 6: (no numbers)
+Line 7: 22 88
+
+Made output.csv
+"""
+
+CSV file output:
+Line 1: 4 7 22,Line 2: (no numbers),Line 3: 21 73 11 3,Line 4: (no numbers),Line 5: 44 18 2 5 16 13 19,Line 6: (no numbers),Line 7: 22 88
