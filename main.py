@@ -1,41 +1,54 @@
 import re
+import csv
 
-file = open("ingest_this.txt", "r")
+filename = input("Enter the file name: ")
 
-text_line = 1
+file = open(filename, "r")
+
+results = []
+line_number = 1
 
 for line in file:
-    numbers = re.findall(r'\d+', line)
-
-    print("Line", text_line)
+    numbers = re.findall(r'\d+', line)   
+    result_line = "Line " + str(line_number) + ": "
 
     if len(numbers) == 0:
-        print(" no numbers found")
+        result_line = result_line + "(no numbers)"
     else:
-        checked = []
+        nums_text = ""
+        for n in numbers:
+            nums_text = nums_text + n + " "
+        result_line = result_line + nums_text.strip()
 
-        for num in numbers:
-            if num not in checked:
-                count = numbers.count(num)
-                print(" ", num, "-", count, "time(s)")
-                checked.append(num)
-    
-    text_line = text_line + 1
+    results.append(result_line)
+    line_number = line_number + 1
 
 file.close()
 
+print("\nResults:\n")
+for r in results:
+    print(r)
+
+out_file = open("output.csv", "w", newline="")
+writer = csv.writer(out_file)
+writer.writerow(results)
+out_file.close()
+
+print("\nMade output.csv")
+
 """
-
 ian@Julians-MacBook-Pro-7 Lab 2 % python3 main.py
-Line  1
-  67 - 2 time(s)
-Line  2
-  67 - 1 time(s)
-Line  3
-  67 - 3 time(s)
-Line  4
-  67 - 3 time(s)
-Line  5
- no numbers found
+Enter the file name: assignment_3.txt
 
+Results:
+
+Line 1: 4 7 22
+Line 2: (no numbers)
+Line 3: 21 73 11 3
+Line 4: (no numbers)
+Line 5: 44 18 2 5 16 13 19
+Line 6: (no numbers)
+Line 7: 22 88
+
+Made output.csv
 """
